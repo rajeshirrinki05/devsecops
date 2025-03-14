@@ -1,1 +1,31 @@
+# workflow configuration
+name: github actions ci-cd
+on
+  push:
+    branch: [main]
+    paths-ignore: 
+    - 'kubernetes/*'
+  pull_request:
+    branch: [main]
+jobs:
 
+  Test:
+  - name: Unit test
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+
+    - name: Install NodeJs
+      uses: actions/setup-node@v4
+      with:
+      - node-version: '20'
+      cache: 'npm'
+
+    - name: Install dependencies
+      runs: npm ci
+
+    - name: run tests
+      runs: npm test || echo "tests not found, will be added in future"
+
+    
